@@ -1,0 +1,91 @@
+﻿<Window x:Class="MusicPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPlayer"
+        mc:Ignorable="d" 
+        Title="MainWindow" Height="800" Width="350" ResizeMode="NoResize" Background="Black"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Image x:Key="PlayButton" Source="Icon/PlayButton.png" Height="50" Width="50" />
+        <Image x:Key="PauseButton" Source="Icon/PauseButton.png" Height="50" Width="50" />
+        <Image x:Key="StopButton" Source="Icon/StopButton.png" Height="50" Width="50" />
+        <Image x:Key="PlaylistAddButton" Source="Icon/PlaylistAddButton.png" Height="30" Width="30" />
+        <Image x:Key="ForwardButton" Source="Icon/ForwardButton.png" Height="40" Width="40" />
+        <Image x:Key="BackwardButton" Source="Icon/BackwardButton.png" Height="40" Width="40" />
+        <Image x:Key="VolumeButton" Source="Icon/VolumeButton.png" Height="30" Width="30" />
+        <Image x:Key="MuteButton" Source="Icon/MuteButton.png" Height="30" Width="30" />
+    </Window.Resources>
+
+    <Grid Height="761" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="375*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="291*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <MediaElement x:Name="mediaElement" Source="{Binding ElementName=listbox, Path=SelectedItem}" LoadedBehavior="Manual" Margin="125,0,125.4,162.2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Height="100" OpacityMask="White" Grid.ColumnSpan="2" MediaEnded="mediaElement_MediaEnded" />
+        <ProgressBar x:Name="Progress" Minimum="0" Maximum="{Binding NaturalDuration.TimeSpan.TotalSeconds, ElementName=mediaElement}" Value="{Binding Position.TotalSeconds, ElementName=mediaElement, Mode=OneWay}" Margin="1,0.8,-0.6,16.8" HorizontalAlignment="Center" VerticalAlignment="Center" Height="12" Width="350" Grid.ColumnSpan="2" Foreground="#FF4D8ABC" Background="#FF282828" MouseLeftButtonUp="Progress_MouseLeftButtonUp" Grid.Row="1"/>
+        <WrapPanel HorizontalAlignment="Left" Height="65" VerticalAlignment="Top" Width="330" Margin="10,20,0,0" Grid.ColumnSpan="2">
+            <Label x:Name="ArtistName" Content="" Height="30" Width="330" FontFamily="Malgun Gothic Semilight" Foreground="White" HorizontalContentAlignment="Center"/>
+            <Label x:Name="MusicName" Content="" Height="37" Width="330" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch"/>
+        </WrapPanel>
+        <Label x:Name="lblStatus" Content="" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1,6.8,-0.6,64" Width="350" Grid.ColumnSpan="2" Height="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="{x:Null}" Foreground="White" Grid.Row="1" Grid.RowSpan="2"/>
+        <GridSplitter HorizontalAlignment="Left" Height="4" VerticalAlignment="Top" Width="350" Grid.ColumnSpan="2" Grid.Row="3"/>
+        <ListBox x:Name="playlist" DisplayMemberPath="Title" SelectedValuePath="MusicURI" HorizontalAlignment="Left" Height="275" VerticalAlignment="Top" Width="330" Margin="10,16,0,-0.2" Grid.Row="3" Grid.ColumnSpan="2" MouseDoubleClick="playlist_MouseDoubleClick"/>
+        <Image x:Name="Cover" HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="250" Grid.ColumnSpan="2" Margin="50,105,0,0"/>
+        <WrapPanel HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="300" Margin="26,2.2,25.4,0" Grid.ColumnSpan="2" Grid.Row="2">
+            <Button x:Name="PlaylistAdd" Width="40" Height="40" Click="PlaylistAdd_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource PlaylistAddButton}">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/PlaylistAddButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+            <Button x:Name="Backward" Width="50" Height="50" Click="Backward_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource BackwardButton}">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/BackwardButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+            <Button x:Name="Play" Width="60" Height="60" Click="Play_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource PlayButton}">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/PlayButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+            <Button x:Name="Stop" Width="60" Height="60" Click="Stop_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource StopButton}">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/StopButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+            <Button x:Name="Forward" Width="50" Height="50" Click="Forward_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource ForwardButton}">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/ForwardButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+            <Button x:Name="VolumeButton" Width="40" Height="40" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource VolumeButton}" Click="VolumeButton_Click">
+                <Button.OpacityMask>
+                    <ImageBrush ImageSource="Icon/VolumeButton.png"/>
+                </Button.OpacityMask>
+            </Button>
+        </WrapPanel>
+        <Slider x:Name="VolumeSlider" Margin="120.8,5.8,34.4,38.6" Maximum="1" Minimum="0" Value="0.5" SmallChange="0.1" Grid.Column="1" Grid.RowSpan="2" Width="20" Height="50" ValueChanged="VolumeSlider_ValueChanged" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Slider.Style>
+                <Style>
+                    <Setter Property="Slider.Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=VolumeButton, Path=IsMouseOver}" Value="true">
+                            <Setter Property="Slider.Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=VolumeSlider, Path=IsMouseOver}" Value="true">
+                            <Setter Property="Slider.Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Slider.Style>
+        </Slider>
+    </Grid>
+</Window>
